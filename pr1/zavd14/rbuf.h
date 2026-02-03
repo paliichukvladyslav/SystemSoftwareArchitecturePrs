@@ -1,6 +1,8 @@
 #ifndef RBUF_H
 #define RBUF_H
 
+#include <stdbool.h>
+
 typedef struct RingBuffer {
 	char **lines;
 	size_t capacity;
@@ -10,5 +12,5 @@ typedef struct RingBuffer {
 
 void rbuf_init(RingBuffer *rb, int n);
 void rbuf_push(RingBuffer *rb, const char *line);
-void rbuf_print(RingBuffer *rb);
+void rbuf_print(RingBuffer *rb, bool reverse);
 #endif

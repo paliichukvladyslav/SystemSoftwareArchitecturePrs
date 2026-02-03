@@ -22,9 +22,15 @@ void rbuf_push(RingBuffer *rb, const char *line) {
 	if (rb->size < rb->capacity) rb->size++;
 }
 
-void rbuf_print(RingBuffer *rb) {
+void rbuf_print(RingBuffer *rb, bool reverse) {
 	for (int i = 0; i < rb->size; i++) {
-		int idx = (rb->head - 1 - i + rb->capacity) % rb->capacity;
+		int idx;
+		if (reverse) {
+			idx = (rb->head - 1 - i + rb->capacity) % rb->capacity;
+		}
+		else {
+			idx = (rb->head - rb->size + i + rb->capacity) % rb->capacity;
+		}	
 		if (rb->lines[idx]) printf("%s", rb->lines[idx]);
 	}
 }

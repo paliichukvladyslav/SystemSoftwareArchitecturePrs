@@ -2,7 +2,6 @@
 #include <unistd.h>
 
 #include <stdint.h>
-#include <stdbool.h>
 #include <errno.h>
 #include <stdlib.h>
 
@@ -12,7 +11,7 @@
 
 int main(int argc, char *argv[]) {
 	size_t n;
-	bool reverse;
+	bool reverse = false;
 
 	unsigned long n_tmp;
 	char *end_tmp;
@@ -23,7 +22,6 @@ int main(int argc, char *argv[]) {
 		switch (opt) {
 		case 'r':
 			reverse = true;
-			puts("reverse to be implemented");
 			break;
 		case 'n':
 			if (optarg[0] == '-') {
@@ -51,7 +49,7 @@ int main(int argc, char *argv[]) {
 		rbuf_push(&rb, buffer);
 	}
 
-	rbuf_print(&rb);
+	rbuf_print(&rb, reverse);
 	
 	return 0;
 }
