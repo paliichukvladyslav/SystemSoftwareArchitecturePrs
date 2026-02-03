@@ -1,11 +1,45 @@
 #include <stdio.h>
+#include <unistd.h>
+
+#include <stdint.h>
+#include <stdbool.h>
+#include <errno.h>
+#include <stdlib.h>
 
 #include "rbuf.h"
 
 #define BUF_SIZE (128 * 1024)
 
 int main(int argc, char *argv[]) {
-	int n = 10;
+	size_t n;
+	bool reverse;
+
+	unsigned long n_tmp;
+	char *end_tmp;
+
+	errno = 0;
+	int opt;
+	while ( (opt = getopt(argc, argv, "n:r")) != -1 ) {
+		switch (opt) {
+		case 'r':
+			reverse = true;
+			puts("reverse to be implemented");
+			break;
+		case 'n':
+			if (optarg[0] == '-') {
+				fprintf(stderr, "size must be non-negative\n");
+				exit(1);
+			}
+			n_tmp = strtoul(optarg, &end_tmp, 10);
+		}
+	}
+
+	if (errno != 0 || *end_tmp != '\0' || n_tmp > SIZE_MAX) {
+		fprintf(stderr, "invalid size provided: %s\n", optarg);
+		exit(1);
+	}
+
+	n = (size_t)n_tmp;
 
 	RingBuffer rb;
 	rbuf_init(&rb, n);
