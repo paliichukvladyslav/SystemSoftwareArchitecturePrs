@@ -1,4 +1,4 @@
-default: zavd14
+default: last
 
-zavd14: rbuf.c
-	gcc zavd14.c rbuf.c -o zavd14
+last: rbuf.c
+	gcc last.c rbuf.c -o last
