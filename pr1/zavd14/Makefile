@@ -1,4 +1,18 @@
-default: last
+CC=gcc
+CFLAGS=-Wall
 
-last: rbuf.c
-	gcc last.c rbuf.c -o last
+SRCS:=$(wildcard *.c)
+OBJS:=$(SRCS:.c=.o)
+
+BIN_NAME=last
+
+default: $(BIN_NAME)
+
+$(BIN_NAME): $(OBJS)
+	$(CC) $(OBJS) -o $(BIN_NAME)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJS) $(TARGET)
