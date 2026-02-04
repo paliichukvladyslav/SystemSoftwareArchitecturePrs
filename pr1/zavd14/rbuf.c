@@ -4,7 +4,7 @@
 
 #include "rbuf.h"
 
-void rbuf_init(RingBuffer *rb, int n) {
+void rbuf_init(RingBuffer *rb, size_t n) {
 	rb->lines = calloc(n, sizeof(char *));
 	rb->capacity = n;
 	rb->head = 0;
