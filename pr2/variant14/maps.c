@@ -6,8 +6,8 @@
 #define MAPS_SIZE 128 /* example value */
 
 typedef struct Mapping {
-	int start;
-	int end;
+	unsigned long start;
+	unsigned long end;
 	char perms[5];
 	int file_offset;
 	int dev[2];
@@ -22,26 +22,29 @@ int parse_mappings(Mapping *maps) {
 	int count = 0;
 	
 	while (fgets(line, sizeof(line), maps_file)) {
-		if (count > MAPS_SIZE) break;
+		if (count >= MAPS_SIZE) break;
 
 		Mapping *cur_map = maps + count;
 
-		int start, end, file_offset, inode;
+		unsigned long start, end
+		int file_offset, inode;
 		int dev[2];
 		char perms[5];
 		char pathname[64];
-		sscanf(line, "%x-%x %4s %x %2d:%2d %d %63s", &start, &end, perms, &file_offset, &dev[0], &dev[1], &inode, pathname);
+		sscanf(line, "%lx-%lx %4s %x %x:%x %d %63s", &start, &end, perms, &file_offset, &dev[0], &dev[1], &inode, pathname);
 
 		cur_map->start = start;	
 		cur_map->end = end;
 		memcpy(cur_map->perms, perms, 5);
 		cur_map->file_offset = file_offset;
-		memcpy(cur_map->dev, dev, 2);
+		memcpy(cur_map->dev, dev, sizeof(dev));
 		cur_map->inode = inode;
 		memcpy(cur_map->pathname, pathname, 64);
 
 		count++;
 	}
+
+	fclose(maps_file);
 	return count;
 }
 
