@@ -2,6 +2,12 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define CLR_RESET "\033[0m"
+
+#define CLR_RED "\033[31m"
+#define CLR_YELLOW "\033[33m"
+#define CLR_BLUE "\033[34m"
+
 #define BUF_SIZE (8 * 1024)
 #define MAPS_SIZE 128 /* example value */
 
@@ -26,7 +32,7 @@ int parse_mappings(Mapping *maps) {
 
 		Mapping *cur_map = maps + count;
 
-		unsigned long start, end
+		unsigned long start, end;
 		int file_offset, inode;
 		int dev[2];
 		char perms[5];
@@ -49,9 +55,14 @@ int parse_mappings(Mapping *maps) {
 }
 
 void print_mapping(Mapping *m) {
-	printf("mapping for %s with offset %x with %s perms\n", m->pathname, m->file_offset, m->perms);
-	printf("starts at %x, ends at %x, total %d bytes\n", m->start, m->end, (m->end - m->start));
-	printf("device %d:%d, inode number %d\n\n", m->dev[0], m->dev[1], m->inode);
+	printf("mapping for %s with offset %x with " CLR_YELLOW"%s"CLR_RESET" perms\n", m->pathname, m->file_offset, m->perms);
+	printf("starts at " CLR_RED"%lx"CLR_RESET", ends at " CLR_RED"%lx"CLR_RESET", total %ld bytes\n", m->start, m->end, (m->end - m->start));
+	printf("device " CLR_BLUE"%d"CLR_RESET":"CLR_BLUE"%d"CLR_RESET", inode number "CLR_BLUE"%d\n"CLR_RESET, m->dev[0], m->dev[1], m->inode);
+}
+
+void print_sep(void) {
+	for (int i = 0; i < 80; i++) putchar('=');
+	putchar('\n');
 }
 
 int main(void) {
@@ -62,6 +73,7 @@ int main(void) {
 
 	for (int i = 0; i < n; i++) {
 		print_mapping(maps + i);
+		print_sep();
 	}
 
 	return 0;
