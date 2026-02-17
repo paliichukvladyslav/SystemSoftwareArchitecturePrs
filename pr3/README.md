@@ -409,3 +409,43 @@ cc     copy.c   -o copy
 [root@c4b5da655477 /]# ./copy /etc/pki/tls/openssl.cnf out
 File size limit exceeded   (core dumped) ./copy /etc/pki/tls/openssl.cnf out
 ```
+
+## Завдання 3.6
+
+### Код
+
+```c
+/* factorial */
+#include <stdio.h>
+
+unsigned long long fact(unsigned long long n) {
+	return n * fact(n - 1);
+}
+
+int main() {
+	unsigned long long n = 1000000;
+	printf("calculating factorial of %llu...\n", n);
+
+	unsigned long long result = fact(n);
+
+	printf("result: %llu\n", result);
+	return 0;
+}
+```
+
+### Компіляція та запуск
+
+```bash
+[root@c4b5da655477 /]# vim factorial.c
+[root@c4b5da655477 /]# make factorial
+cc     factorial.c   -o factorial
+[root@c4b5da655477 /]# ulimit -s 64
+[root@c4b5da655477 /]# ulimit -s
+64
+[root@c4b5da655477 /]# ./factorial 
+calculating factorial of 1000000...
+Segmentation fault         (core dumped) ./factorial
+[root@c4b5da655477 /]# 
+```
+
+Ми обмежили стек до 64 КіБ. Цього явно не вистачає для обчислення великого факторіалу, бачимо segfault.
