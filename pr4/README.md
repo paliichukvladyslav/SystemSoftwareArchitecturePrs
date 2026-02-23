@@ -346,3 +346,80 @@ dietpi@DietPi:pr4$ ./46
 realloc(NULL,16) = 0x55a062d2a0
 realloc(b,0) = (nil)
 ```
+
+## Завдання 4.7
+
+### Код
+
+Початковий варіант з realloc:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct sbar {
+	float x, y;
+};
+
+int main(void) {
+	struct sbar *ptr, *newptr;
+
+	ptr = calloc(1000, sizeof(struct sbar));
+
+	newptr = realloc(ptr, 500 * sizeof(struct sbar));
+	if (newptr == NULL) {
+		free(ptr);
+		return 1;
+	}
+	ptr = newptr;
+}
+```
+
+Переписаний варіант з reallocarray:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct sbar {
+	float x, y;
+};
+
+int main(void) {
+	struct sbar *ptr, *newptr;
+
+	ptr = calloc(1000, sizeof(struct sbar));
+
+	newptr = reallocarray(ptr, 500, sizeof(struct sbar));
+	if (newptr == NULL) {
+		free(ptr);
+		return 1;
+	}
+	ptr = newptr;
+}
+```
+
+### Компіляція та запуск
+
+```bash
+dietpi@DietPi:pr4$ make sbar1
+cc     sbar1.c   -o sbar1
+dietpi@DietPi:pr4$ ltrace ./sbar1 
+__libc_start_main(["./sbar1"] <unfinished ...>
+calloc(1000, 8)                                                                                                        = 0x55a47182a0
+realloc(0x55a47182a0, 4000)                                                                                            = 0x55a47182a0
+__cxa_finalize(0x5591930040)                                                                                           = <void>
++++ exited (status 0) +++
+dietpi@DietPi:pr4$ make sbar2
+cc     sbar2.c   -o sbar2
+dietpi@DietPi:pr4$ ltrace ./sbar2
+__libc_start_main(["./sbar2"] <unfinished ...>
+calloc(1000, 8)                                                                                                        = 0x55934b12a0
+reallocarray(0x55934b12a0, 500, 8)                                                                                     = 0x55934b12a0
+__cxa_finalize(0x555d5e0040)                                                                                           = <void>
++++ exited (status 0) +++
+dietpi@DietPi:pr4$ 
+```
+
+Функція reallocarray() використовується для безпечного перевиділення пам'яті, подібно до realloc(), але на відміну від неї додатково перевіряє можливе переповнення під час обчислення загального розміру (кількість елементів * розмір одного елемента). У випадку переповнення reallocarray() повертає NULL і встановлює errno в ENOMEM, що дозволяє уникнути небезпечних помилок і некоректного виділення пам'яті.
+Під час трасування викликів бібліотеки за допомогою ltrace встановлено, що функція reallocarray() у даній реалізації libc представлена як окремий символ і викликається безпосередньо, а не через realloc(). Однак, у більш старих реалізаціях glibc можна побачити виклик realloc() при використанні reallocarray(), оскільки раніше reallocarray() являв собою лише обгортку над realloc().
