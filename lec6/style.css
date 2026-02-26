@@ -1,0 +1,20 @@
+table.sample {
+    background-color: white;
+    font-style: normal;
+    font-family: Verdana, serif;
+    font-size: 14px;
+}
+table.sample th {
+    background-color: paleturquoise;
+    border-width: 1px;
+	padding: 1px;
+	border-style: dotted;
+	border-color: gray;
+	-moz-border-radius: ;
+}
+table.sample td {
+    background-color: white;
+}
+ol.d {
+    list-style-type: decimal;
+}

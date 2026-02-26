@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<table class="sample" width="900" align="center">
+  <tr>
+    <th>{{ title }}</th>
+  </tr>
+  <tr>
+	<td>
+		<ol class="d">
+			{% for s in slides %}
+			<li><a href="{{ s.file }}">{{ s.title }}</a></li>
+			{% endfor %}
+		</ol>
+	</td>
+  </tr>
+</table>
+
+<br>
+
+
+</body>
+</html>
