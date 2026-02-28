@@ -16,10 +16,12 @@ shutil.copytree(BASE / "img", OUT / "img", dirs_exist_ok=True)
 env = Environment(loader=FileSystemLoader(BASE / "templates"))
 
 slides = [
-    {"file": "slide01.html", "title": "test", "img": "img/01.png"},
-    {"file": "slide02.html", "title": "test", "img": "img/01.png"},
-    {"file": "slide03.html", "title": "test", "img": "img/01.png"},
-    {"file": "slide04.html", "title": "test", "img": "img/01.png"},
+    {"file": "01_intro.html", "title": "Вступ", "img": "img/intro.png"},
+    {"file": "02_asan_shadowmemory.html", "title": "ASan: принцип роботи (shadow memory)", "img": "img/shadowmemory.png"},
+    {"file": "03_asan_redzones.html", "title": "ASan: redzones", "img": "img/redzones.png"},
+    {"file": "04_asan_rpi3.html", "title": "ASan: кейс Raspberry Pi 3 (2016)", "img": "img/rpi3bug.png"},
+    {"file": "05_asan_building.html", "title": "ASan: компіляція та інструментація", "img": "img/asan_building.png"},
+    {"file": "slide05.html", "title": "test", "img": "img/01.png"},
     {"file": "slide05.html", "title": "test", "img": "img/01.png"},
 ]
 
